@@ -360,11 +360,9 @@ function initLogo(){
       reader.readAsDataURL(file);
     });
   }
-  // If a logo.png ships beside the dashboard, auto-load it
-  const test=new Image();
-  test.onload=()=>applyLogo('logo.png');
-  test.onerror=()=>{};
-  test.src='logo.png';
+  // logo.png ships with the dashboard and is already embedded in the HTML.
+  // Update the label since a permanent logo is present.
+  const lbl=document.getElementById('logoLabel'); if(lbl) lbl.textContent='تغيير اللوجو';
 }
 
 /* ---------- INIT ---------- */

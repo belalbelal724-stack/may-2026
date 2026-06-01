@@ -59,16 +59,16 @@ body{
 [data-theme="light"] .topbar{background:linear-gradient(90deg,rgba(255,255,255,.92),rgba(244,247,251,.88))}
 .brand{display:flex;align-items:center;gap:14px}
 .logo-frame{
-  width:54px;height:54px;border-radius:50%;position:relative;flex-shrink:0;
+  width:54px;height:54px;border-radius:50%;position:relative;flex-shrink:0;overflow:hidden;
   display:grid;place-items:center;
-  background:radial-gradient(circle,var(--card-2),var(--navy-1));
+  background:#ffffff;
   border:2px solid var(--accent);
   box-shadow:0 0 14px var(--accent),0 0 28px rgba(56,189,248,.5),inset 0 0 12px rgba(56,189,248,.3);
   animation:ringpulse 3s ease-in-out infinite;
 }
 @keyframes ringpulse{0%,100%{box-shadow:0 0 12px var(--accent),0 0 26px rgba(56,189,248,.45),inset 0 0 10px rgba(56,189,248,.25)}50%{box-shadow:0 0 22px var(--accent),0 0 46px rgba(56,189,248,.7),inset 0 0 16px rgba(56,189,248,.45)}}
 .logo-frame span{font-family:'Rakkas';font-size:22px;color:var(--accent);text-shadow:0 0 10px var(--accent)}
-.logo-frame img{width:100%;height:100%;border-radius:50%;object-fit:cover;padding:3px}
+.logo-frame img{width:100%;height:100%;border-radius:50%;object-fit:cover}
 .brand-text b{font-family:'Cairo';font-weight:900;font-size:16px;letter-spacing:.3px;display:block;line-height:1.2}
 .brand-text small{color:var(--text-mute);font-size:11px}
 .top-actions{display:flex;align-items:center;gap:10px}
@@ -83,20 +83,20 @@ body{
 /* ===== HERO ===== */
 .hero{text-align:center;padding:54px 20px 30px;position:relative}
 .hero-logo{
-  width:120px;height:120px;border-radius:50%;margin:0 auto 22px;position:relative;
-  display:grid;place-items:center;
-  background:radial-gradient(circle at 50% 35%,var(--card-2),var(--navy-1) 75%);
+  width:140px;height:140px;border-radius:50%;margin:0 auto 22px;position:relative;
+  display:grid;place-items:center;overflow:hidden;
+  background:#ffffff;
   border:3px solid var(--accent);
-  box-shadow:0 0 26px var(--accent),0 0 60px rgba(56,189,248,.55),inset 0 0 26px rgba(56,189,248,.35);
+  box-shadow:0 0 26px var(--accent),0 0 60px rgba(56,189,248,.5),0 0 40px rgba(212,175,55,.35),inset 0 0 26px rgba(56,189,248,.3);
   animation:ringpulse 3.4s ease-in-out infinite;
 }
 .hero-logo::before{
   content:"";position:absolute;inset:-9px;border-radius:50%;
-  border:1.5px dashed rgba(56,189,248,.45);animation:spin 18s linear infinite;
+  border:1.5px dashed rgba(212,175,55,.5);animation:spin 18s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 .hero-logo span{font-family:'Rakkas';font-size:40px;color:var(--accent);text-shadow:0 0 16px var(--accent),0 0 30px rgba(56,189,248,.7)}
-.hero-logo img{width:100%;height:100%;border-radius:50%;object-fit:cover;padding:5px}
+.hero-logo img{width:100%;height:100%;border-radius:50%;object-fit:cover}
 .hero h1{
   font-family:'Lalezar','Rakkas',cursive;font-weight:400;font-size:clamp(30px,6vw,62px);
   line-height:1.15;letter-spacing:1px;color:#eaf4ff;
@@ -111,6 +111,11 @@ body{
 @keyframes sigglow{0%,100%{text-shadow:0 0 10px rgba(56,189,248,.6),0 2px 0 #1e3a8a;transform:translateY(0)}50%{text-shadow:0 0 24px rgba(56,189,248,1),0 0 40px rgba(96,165,250,.6),0 2px 0 #1e3a8a;transform:translateY(-2px)}}
 .hero .present{margin-top:18px;font-size:14px;color:var(--text-dim);font-family:'Tajawal'}
 .hero .present b{color:var(--accent-2)}
+.gm-name{
+  font-family:'Lalezar','Rakkas';font-size:26px;color:#cfe3ff;display:inline-block;vertical-align:middle;
+  padding:0 4px;text-shadow:0 0 14px rgba(56,189,248,.85),0 2px 0 #1e3a8a;
+  animation:sigglow 2.6s ease-in-out infinite;
+}
 
 /* ===== NAV TABS ===== */
 .tabs{
@@ -231,7 +236,7 @@ tr:hover td{background:var(--card-2);color:var(--text)}
 <!-- TOP BAR -->
 <div class="topbar">
   <div class="brand">
-    <div class="logo-frame" id="logoMini"><span>ل</span></div>
+    <div class="logo-frame" id="logoMini"><img src="logo.png" alt="B.LABAN"></div>
     <div class="brand-text"><b>لبن قطر</b><small>إدارة تشغيل قطر · Operations Intelligence</small></div>
   </div>
   <div class="top-actions">
@@ -249,11 +254,11 @@ tr:hover td{background:var(--card-2);color:var(--text)}
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-logo" id="logoBig"><span>لبن</span></div>
+  <div class="hero-logo" id="logoBig"><img src="logo.png" alt="B.LABAN"></div>
   <h1>تحليل استهلاكات فروع قطر</h1>
   <div class="sub1">مايو 2026 · إدارة تشغيل قطر</div>
   <div class="sub2">بلال الأنصاري</div>
-  <div class="present">مُقدَّم إلى المدير العام · <b>أ / خالد محمد</b> — مدير عام لبن قطر</div>
+  <div class="present">مُقدَّم إلى المدير العام · <span class="gm-name">أ / خالد محمد</span> — مدير عام لبن قطر</div>
 </div>
 
 <!-- TABS -->
