@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تحليل استهلاكات فروع قطر — مايو 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Maram-style Arabic display font (Lalezar / Rakkas as glowing display) + body fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Rakkas&family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<script src="chart.umd.js"></script>
+<style>
+:root{
+  --navy-1:#0a1628; --navy-2:#0f2038; --navy-3:#16304f;
+  --blue-1:#2563eb; --blue-2:#3b82f6; --blue-3:#60a5fa; --blue-glow:#38bdf8;
+  --steel-1:#475569; --steel-2:#64748b; --steel-3:#94a3b8;
+  --bg:#070d18; --bg-2:#0b1424; --card:#0f1c33; --card-2:#13233f;
+  --border:#1e3252; --text:#e8eef7; --text-dim:#9fb2cc; --text-mute:#6b7f9e;
+  --accent:#38bdf8; --accent-2:#60a5fa; --good:#34d399; --warn:#fbbf24; --bad:#f87171;
+  --grad-1:linear-gradient(135deg,#1e3a8a,#2563eb,#38bdf8);
+  --grad-card:linear-gradient(160deg,rgba(30,58,138,.18),rgba(15,28,51,.6));
+  --shadow:0 18px 50px -12px rgba(0,0,0,.7);
+  --glow-blue:0 0 18px rgba(56,189,248,.55),0 0 40px rgba(37,99,235,.35);
+}
+[data-theme="light"]{
+  --bg:#eef2f8; --bg-2:#e2e9f3; --card:#ffffff; --card-2:#f4f7fb;
+  --border:#cdd9ea; --text:#0f2038; --text-dim:#3f5878; --text-mute:#7387a3;
+  --navy-1:#1e3a8a; --navy-2:#2c4a90;
+  --grad-card:linear-gradient(160deg,rgba(37,99,235,.08),rgba(255,255,255,.9));
+  --shadow:0 14px 40px -16px rgba(30,58,90,.35);
+  --glow-blue:0 0 14px rgba(37,99,235,.35),0 0 28px rgba(56,189,248,.2);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Tajawal','Cairo',sans-serif;background:var(--bg);color:var(--text);
+  min-height:100vh;overflow-x:hidden;transition:background .5s,color .5s;
+  background-image:
+    radial-gradient(circle at 12% 8%,rgba(37,99,235,.13),transparent 42%),
+    radial-gradient(circle at 88% 12%,rgba(56,189,248,.10),transparent 45%),
+    radial-gradient(circle at 50% 100%,rgba(30,58,138,.12),transparent 55%);
+}
+[data-theme="light"] body{
+  background-image:
+    radial-gradient(circle at 12% 8%,rgba(37,99,235,.10),transparent 42%),
+    radial-gradient(circle at 88% 12%,rgba(56,189,248,.10),transparent 45%);
+}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:var(--bg-2)}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--blue-1),var(--navy-3));border-radius:6px}
+
+/* ===== HEADER ===== */
+.topbar{
+  position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
+  padding:14px 26px;backdrop-filter:blur(16px);
+  background:linear-gradient(90deg,rgba(10,22,40,.92),rgba(15,32,56,.85));
+  border-bottom:1px solid var(--border);
+}
+[data-theme="light"] .topbar{background:linear-gradient(90deg,rgba(255,255,255,.92),rgba(244,247,251,.88))}
+.brand{display:flex;align-items:center;gap:14px}
+.logo-frame{
+  width:54px;height:54px;border-radius:50%;position:relative;flex-shrink:0;
+  display:grid;place-items:center;
+  background:radial-gradient(circle,var(--card-2),var(--navy-1));
+  border:2px solid var(--accent);
+  box-shadow:0 0 14px var(--accent),0 0 28px rgba(56,189,248,.5),inset 0 0 12px rgba(56,189,248,.3);
+  animation:ringpulse 3s ease-in-out infinite;
+}
+@keyframes ringpulse{0%,100%{box-shadow:0 0 12px var(--accent),0 0 26px rgba(56,189,248,.45),inset 0 0 10px rgba(56,189,248,.25)}50%{box-shadow:0 0 22px var(--accent),0 0 46px rgba(56,189,248,.7),inset 0 0 16px rgba(56,189,248,.45)}}
+.logo-frame span{font-family:'Rakkas';font-size:22px;color:var(--accent);text-shadow:0 0 10px var(--accent)}
+.logo-frame img{width:100%;height:100%;border-radius:50%;object-fit:cover;padding:3px}
+.brand-text b{font-family:'Cairo';font-weight:900;font-size:16px;letter-spacing:.3px;display:block;line-height:1.2}
+.brand-text small{color:var(--text-mute);font-size:11px}
+.top-actions{display:flex;align-items:center;gap:10px}
+.theme-toggle{
+  display:flex;align-items:center;gap:8px;cursor:pointer;border:1px solid var(--border);
+  background:var(--card-2);border-radius:30px;padding:7px 14px;font-size:13px;color:var(--text-dim);
+  transition:.3s;font-family:'Tajawal'
+}
+.theme-toggle:hover{border-color:var(--accent);color:var(--text)}
+.theme-toggle .dot{width:16px;height:16px}
+
+/* ===== HERO ===== */
+.hero{text-align:center;padding:54px 20px 30px;position:relative}
+.hero-logo{
+  width:120px;height:120px;border-radius:50%;margin:0 auto 22px;position:relative;
+  display:grid;place-items:center;
+  background:radial-gradient(circle at 50% 35%,var(--card-2),var(--navy-1) 75%);
+  border:3px solid var(--accent);
+  box-shadow:0 0 26px var(--accent),0 0 60px rgba(56,189,248,.55),inset 0 0 26px rgba(56,189,248,.35);
+  animation:ringpulse 3.4s ease-in-out infinite;
+}
+.hero-logo::before{
+  content:"";position:absolute;inset:-9px;border-radius:50%;
+  border:1.5px dashed rgba(56,189,248,.45);animation:spin 18s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero-logo span{font-family:'Rakkas';font-size:40px;color:var(--accent);text-shadow:0 0 16px var(--accent),0 0 30px rgba(56,189,248,.7)}
+.hero-logo img{width:100%;height:100%;border-radius:50%;object-fit:cover;padding:5px}
+.hero h1{
+  font-family:'Lalezar','Rakkas',cursive;font-weight:400;font-size:clamp(30px,6vw,62px);
+  line-height:1.15;letter-spacing:1px;color:#eaf4ff;
+  text-shadow:
+    0 1px 0 #2563eb,0 2px 0 #1e40af,0 3px 0 #1e3a8a,
+    0 0 18px rgba(56,189,248,.85),0 0 38px rgba(56,189,248,.55),0 0 70px rgba(37,99,235,.4);
+  animation:titleglow 3.5s ease-in-out infinite;
+}
+@keyframes titleglow{0%,100%{text-shadow:0 1px 0 #2563eb,0 2px 0 #1e40af,0 3px 0 #1e3a8a,0 0 14px rgba(56,189,248,.7),0 0 30px rgba(56,189,248,.45),0 0 60px rgba(37,99,235,.3)}50%{text-shadow:0 1px 0 #2563eb,0 2px 0 #1e40af,0 3px 0 #1e3a8a,0 0 22px rgba(56,189,248,1),0 0 48px rgba(56,189,248,.7),0 0 90px rgba(37,99,235,.5)}}
+.hero .sub1{font-family:'Lalezar','Rakkas';font-size:clamp(18px,3vw,30px);color:var(--accent-2);margin-top:6px;text-shadow:0 0 14px rgba(96,165,250,.7),0 2px 0 #1e40af}
+.hero .sub2{font-family:'Lalezar','Rakkas';font-size:clamp(16px,2.4vw,24px);color:#cfe3ff;margin-top:4px;text-shadow:0 0 16px rgba(56,189,248,.8),0 2px 0 #1e3a8a;animation:sigglow 2.6s ease-in-out infinite}
+@keyframes sigglow{0%,100%{text-shadow:0 0 10px rgba(56,189,248,.6),0 2px 0 #1e3a8a;transform:translateY(0)}50%{text-shadow:0 0 24px rgba(56,189,248,1),0 0 40px rgba(96,165,250,.6),0 2px 0 #1e3a8a;transform:translateY(-2px)}}
+.hero .present{margin-top:18px;font-size:14px;color:var(--text-dim);font-family:'Tajawal'}
+.hero .present b{color:var(--accent-2)}
+
+/* ===== NAV TABS ===== */
+.tabs{
+  position:sticky;top:83px;z-index:50;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;
+  padding:14px 16px;margin:0 auto;max-width:1280px;
+}
+.tab{
+  padding:9px 18px;border-radius:30px;border:1px solid var(--border);background:var(--card-2);
+  color:var(--text-dim);cursor:pointer;font-family:'Tajawal';font-weight:700;font-size:14px;transition:.25s;
+}
+.tab:hover{color:var(--text);border-color:var(--accent-2)}
+.tab.active{background:var(--grad-1);color:#fff;border-color:transparent;box-shadow:var(--glow-blue)}
+
+/* ===== BRANCH SELECTOR BAR ===== */
+.branch-bar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:18px auto;max-width:900px;padding:0 16px}
+.branch-btn{
+  flex:1;min-width:150px;padding:14px 10px;border-radius:16px;border:1px solid var(--border);
+  background:var(--grad-card);cursor:pointer;text-align:center;transition:.3s;position:relative;overflow:hidden;
+}
+.branch-btn:hover{transform:translateY(-3px);border-color:var(--accent)}
+.branch-btn.active{border-color:var(--accent);box-shadow:var(--glow-blue)}
+.branch-btn.active::before{content:"";position:absolute;inset:0;background:var(--grad-1);opacity:.16}
+.branch-btn .bn{font-family:'Cairo';font-weight:900;font-size:18px;position:relative}
+.branch-btn .bm{font-size:12px;color:var(--text-mute);position:relative;margin-top:3px}
+
+/* ===== LAYOUT ===== */
+.wrap{max-width:1280px;margin:0 auto;padding:10px 18px 40px}
+.section{display:none;animation:fadein .5s ease}
+.section.active{display:block}
+@keyframes fadein{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.sec-title{font-family:'Cairo';font-weight:900;font-size:24px;margin:22px 0 16px;display:flex;align-items:center;gap:12px}
+.sec-title::before{content:"";width:6px;height:26px;background:var(--grad-1);border-radius:4px;box-shadow:var(--glow-blue)}
+.sec-sub{color:var(--text-dim);font-size:14px;margin:-8px 0 18px;line-height:1.7}
+
+/* ===== KPI CARDS ===== */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:22px}
+.kpi{
+  background:var(--grad-card);border:1px solid var(--border);border-radius:18px;padding:18px 18px;position:relative;overflow:hidden;
+  transition:.3s;
+}
+.kpi:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:var(--shadow)}
+.kpi::after{content:"";position:absolute;top:-30px;left:-30px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(56,189,248,.22),transparent 70%)}
+.kpi .lbl{font-size:13px;color:var(--text-dim);font-weight:600;position:relative}
+.kpi .val{font-family:'Cairo';font-weight:900;font-size:30px;margin-top:8px;position:relative;line-height:1}
+.kpi .val .u{font-size:14px;color:var(--text-mute);font-weight:600}
+.kpi .delta{font-size:12px;margin-top:8px;position:relative;display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px}
+.delta.up{color:var(--good);background:rgba(52,211,153,.12)}
+.delta.down{color:var(--bad);background:rgba(248,113,113,.12)}
+.delta.neu{color:var(--accent-2);background:rgba(96,165,250,.12)}
+
+/* ===== CHART CARDS ===== */
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:18px;margin-bottom:18px}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px;margin-bottom:18px}
+.card{
+  background:var(--grad-card);border:1px solid var(--border);border-radius:20px;padding:20px;position:relative;
+  box-shadow:var(--shadow);transition:.3s
+}
+.card:hover{border-color:rgba(56,189,248,.4)}
+.card h3{font-family:'Cairo';font-weight:700;font-size:16px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.card .hint{font-size:12px;color:var(--text-mute);margin-bottom:14px;line-height:1.6}
+.chart-box{position:relative;height:300px}
+.chart-box.tall{height:380px}
+.chart-box.short{height:240px}
+
+/* ===== TABLE ===== */
+.tbl-wrap{overflow-x:auto;border-radius:16px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:560px}
+th{background:var(--navy-2);color:var(--accent-2);padding:11px 12px;text-align:right;font-family:'Cairo';font-weight:700;position:sticky;top:0}
+[data-theme="light"] th{background:var(--navy-1);color:#fff}
+td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--text-dim)}
+tr:hover td{background:var(--card-2);color:var(--text)}
+.tag{padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700}
+.tag.bad{background:rgba(248,113,113,.16);color:var(--bad)}
+.tag.good{background:rgba(52,211,153,.16);color:var(--good)}
+.tag.warn{background:rgba(251,191,36,.16);color:var(--warn)}
+
+/* ===== INSIGHT / RECO CARDS ===== */
+.insight{
+  background:var(--grad-card);border:1px solid var(--border);border-right:4px solid var(--accent);
+  border-radius:14px;padding:16px 18px;margin-bottom:14px;transition:.3s
+}
+.insight:hover{transform:translateX(-4px);box-shadow:var(--shadow)}
+.insight.crit{border-right-color:var(--bad)}
+.insight.good{border-right-color:var(--good)}
+.insight.warn{border-right-color:var(--warn)}
+.insight h4{font-family:'Cairo';font-weight:700;font-size:16px;margin-bottom:6px;display:flex;align-items:center;gap:9px}
+.insight p{color:var(--text-dim);font-size:14px;line-height:1.85}
+.insight .badge{font-size:11px;padding:3px 10px;border-radius:20px;background:var(--navy-3);color:var(--accent-2);font-weight:700}
+.reco-num{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--grad-1);color:#fff;font-family:'Cairo';font-weight:900;font-size:14px;box-shadow:var(--glow-blue)}
+
+/* ===== PLAN TIMELINE ===== */
+.plan{display:grid;gap:14px}
+.plan-item{display:flex;gap:16px;background:var(--grad-card);border:1px solid var(--border);border-radius:14px;padding:16px}
+.plan-week{flex-shrink:0;width:84px;text-align:center;font-family:'Cairo';font-weight:900;color:var(--accent);border-left:1px solid var(--border);padding-left:14px}
+.plan-week small{display:block;font-size:11px;color:var(--text-mute);font-weight:400}
+.plan-body h4{font-size:15px;margin-bottom:5px;font-family:'Cairo'}
+.plan-body p{font-size:13px;color:var(--text-dim);line-height:1.7}
+
+/* ===== SIGNATURE FOOTER (per page) ===== */
+.sig{
+  text-align:center;margin:34px auto 8px;padding-top:20px;border-top:1px dashed var(--border);
+}
+.sig .name{
+  font-family:'Lalezar','Rakkas';font-size:30px;color:#cfe3ff;display:inline-block;
+  text-shadow:0 0 14px rgba(56,189,248,.8),0 2px 0 #1e3a8a;animation:sigglow 2.6s ease-in-out infinite;
+}
+.sig small{display:block;color:var(--text-mute);font-size:12px;margin-top:4px;font-family:'Tajawal'}
+
+.footer{text-align:center;padding:26px 16px;color:var(--text-mute);font-size:12px;border-top:1px solid var(--border);margin-top:20px}
+.note{background:var(--card-2);border:1px dashed var(--border);border-radius:12px;padding:13px 16px;font-size:12.5px;color:var(--text-mute);line-height:1.8;margin:16px 0}
+.pill-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.pill{padding:7px 14px;border-radius:20px;background:var(--card-2);border:1px solid var(--border);font-size:13px;color:var(--text-dim)}
+.pill b{color:var(--accent-2)}
+@media(max-width:640px){.chart-box{height:260px}.hero h1{font-size:34px}.tabs{top:78px}}
+</style>
+</head>
+<body>
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="brand">
+    <div class="logo-frame" id="logoMini"><span>ل</span></div>
+    <div class="brand-text"><b>لبن قطر</b><small>إدارة تشغيل قطر · Operations Intelligence</small></div>
+  </div>
+  <div class="top-actions">
+    <label class="theme-toggle" for="logoInput" title="ارفع لوجو الشركة">
+      <svg class="dot" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+      <span id="logoLabel">رفع اللوجو</span>
+    </label>
+    <input type="file" id="logoInput" accept="image/*" style="display:none">
+    <div class="theme-toggle" onclick="toggleTheme()">
+      <svg class="dot" id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+      <span id="themeLabel">الوضع الفاتح</span>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-logo" id="logoBig"><span>لبن</span></div>
+  <h1>تحليل استهلاكات فروع قطر</h1>
+  <div class="sub1">مايو 2026 · إدارة تشغيل قطر</div>
+  <div class="sub2">بلال الأنصاري</div>
+  <div class="present">مُقدَّم إلى المدير العام · <b>أ / خالد محمد</b> — مدير عام لبن قطر</div>
+</div>
+
+<!-- TABS -->
+<div class="tabs" id="tabs">
+  <div class="tab active" data-sec="overview">نظرة عامة شاملة</div>
+  <div class="tab" data-sec="branches">الفروع</div>
+  <div class="tab" data-sec="total">إجمالي الفروع</div>
+  <div class="tab" data-sec="compare">المقارنات</div>
+  <div class="tab" data-sec="analytics">التحليلات</div>
+  <div class="tab" data-sec="reco">التوصيات والخطة</div>
+</div>
+
+<div class="wrap">
+  <!-- ============ OVERVIEW ============ -->
+  <section class="section active" id="overview"></section>
+  <!-- ============ BRANCHES ============ -->
+  <section class="section" id="branches">
+    <div class="sec-title">تحليل الفرع المُختار</div>
+    <div class="sec-sub">اختر الفرع من الشريط أدناه لعرض تحليل تفصيلي لاستهلاكاته وهوالكه ودقة الجرد لديه.</div>
+    <div class="branch-bar" id="branchBar"></div>
+    <div id="branchContent"></div>
+  </section>
+  <!-- ============ TOTAL ============ -->
+  <section class="section" id="total"></section>
+  <!-- ============ COMPARE ============ -->
+  <section class="section" id="compare"></section>
+  <!-- ============ ANALYTICS ============ -->
+  <section class="section" id="analytics"></section>
+  <!-- ============ RECO ============ -->
+  <section class="section" id="reco"></section>
+</div>
+
+<div class="footer">
+  © مايو 2026 — لوحة تحكم إدارة تشغيل قطر · لبن قطر · بُنيت لأغراض القرار التشغيلي · جميع الأرقام مستخرجة من شيتات الجرد الشهرية.
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
